@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "798831953558",
+    "project_id": "explore-world-priti",
+    "storage_bucket": "explore-world-priti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798831953558:android:9e1c6dfd06e313f226a4b7",
+        "android_client_info": {
+          "package_name": "com.explore.world.mv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798831953558-k0lvpkjjmfq05o6kh5dvcdu0mkabitpt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.explore.world.mv",
+            "certificate_hash": "a0aeb2baddc146e8ebe76107fa8fcc10312407ad"
+          }
+        },
+        {
+          "client_id": "798831953558-8c2jk16r5bro82j8u5ofelb8n8mnsk02.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcz2aEW5HT34LeFHkSxqEsm8M4SUh0shs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798831953558-8c2jk16r5bro82j8u5ofelb8n8mnsk02.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
