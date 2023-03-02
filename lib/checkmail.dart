@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_page/signin.dart';
+import 'package:home_page/screens/signin.dart';
 
 class CheckMail extends StatefulWidget {
   const CheckMail({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class _CheckMailState extends State<CheckMail> {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(bottom: 170.0,top: 170.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -42,24 +42,32 @@ class _CheckMailState extends State<CheckMail> {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),
-              const Spacer(),
+              SizedBox(height: 100),
+             // const Spacer(flex: 1),
               InkWell(
                 onTap: (){
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>SignIn()), (route) => false);
                 },
-                child: Container(
-                  height: 50,
-                  margin:const EdgeInsets.only(right: 10,left: 10,bottom: 10),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.blueAccent),
-                  child: Text(
-                    "Go Back",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
+              child: Container(
+                        height: 50,
+                        margin: const EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                         // top: 20,
+                        ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                          border: Border.all(width: 1.2),
+                          color: Color(0x881CD7DB),
+                        ),
+                        child: const Text(
+                          "Go Back",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
               )
             ],
           ),

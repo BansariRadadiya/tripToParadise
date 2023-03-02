@@ -5,7 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:home_page/config/user.dart';
 import 'package:home_page/dashboard_screen.dart';
-import 'package:home_page/signin.dart';
+import 'package:home_page/screens/login_option.dart';
+import 'package:home_page/screens/signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_animations/animation_builder/play_animation_builder.dart';
 import 'package:simple_animations/movie_tween/movie_tween.dart';
@@ -22,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), (){
+    Timer(const Duration(seconds: 4), (){
       checkLogin();
     });
   }
@@ -41,10 +42,10 @@ class _SplashScreenState extends State<SplashScreen> {
         final res = data.data();
         UserProfile.userName = res!['userName'];
         UserProfile.id = res['id'];
-        UserProfile.name = res['name'];
+       // UserProfile.name = res['name'];
         UserProfile.profile = res['profile'];
         SharedPreferences _pref = await SharedPreferences.getInstance();
-        _pref.setString("name", res['name']);
+       // _pref.setString("name", res['name']);
         _pref.setString("id", res['id']);
         _pref.setString("userName", res['userName']);
         _pref.setString("profile", res['profile']);
@@ -53,12 +54,12 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         print("Here");
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => SignIn()), (
+            MaterialPageRoute(builder: (context) => LoginOption()), (
             route) => false);
       }
     }else{
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => SignIn()), (
+          MaterialPageRoute(builder: (context) => LoginOption()), (
           route) => false);
     }
   }
@@ -88,20 +89,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      body: Center(
-        child: PlayAnimationBuilder<Movie>(
-          tween: tween, // Pass in tween
-          duration: tween.duration, // Obtain duration
-          builder: (context, value, child) {
-            return SizedBox(
-              width: value.get('width'), // Get animated values
-              height: value.get('height'),
-              // color: value.get('color'),
-               child: Image.asset("home_page/assets/bangkok.jpg"),
-            );
-          },
-        ),
-      ),
-    );
+      body: Stack(
+        children:[ 
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Image.asset("assets/splash_icon.png",fit: BoxFit.contain,)),
+    ]));
   }
 }

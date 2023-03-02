@@ -47,8 +47,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (res.data() != null) {
       final data = res.data();
       setState(() {
-        _nameController.text = data!['name'];
-        _userNameController.text = data['userName'];
+      //  _nameController.text = data!['name'];
+        _userNameController.text = data!['userName'];
         dob.text = data['dob'];
         _mailController.text = data['email'];
         _mobileController.text = data['mobile'];
@@ -839,7 +839,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       FocusScope.of(context).requestFocus(FocusNode());
       LoadingDialog.showLoadingDialog();
       final Map<String, dynamic> userData = {
-        "name": _nameController.text,
+       // "name": _nameController.text,
         "userName": _userNameController.text,
         "dob": dob.text,
         "gender": gender,
@@ -861,9 +861,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .doc(UserProfile.id)
           .update(userData);
       SharedPreferences _pref = await SharedPreferences.getInstance();
-      UserProfile.name = _nameController.text;
+     // UserProfile.name = _nameController.text;
       UserProfile.userName = _userNameController.text;
-      _pref.setString("name", _nameController.text);
+      //_pref.setString("name", _nameController.text);
       _pref.setString("userName", _userNameController.text);
       LoadingDialog.hideLoading();
       LoadingDialog.showSuccessToast("Your Profile Update Successfully");
@@ -985,9 +985,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               : Image.file(File(path!)),
                                         )
                                       : Text(
-                                          _nameController.text.isEmpty
+                                          _userNameController.text.isEmpty
                                               ? ""
-                                              : _nameController.text[0]
+                                              : _userNameController.text[0]
                                                   .toUpperCase(),
                                           style: TextStyle(
                                               fontSize: 78,
@@ -995,26 +995,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         )),
                             )
                           ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              right: 10, left: 10, top: 10),
-                          child: TextFormField(
-                            readOnly: !isEdit,
-                            controller: _nameController,
-                            validator: (value) =>
-                                Validators().validateName(value, "Name"),
-                            decoration: const InputDecoration(
-                                fillColor: Color.fromRGBO(
-                                    189, 187, 187, 0.5647058823529412),
-                                filled: true,
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                ),
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 12),
-                                hintText: "Your name"),
-                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(

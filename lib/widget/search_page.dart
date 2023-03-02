@@ -42,8 +42,13 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Search")),
-      ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text('Search',style:TextStyle(color: Colors.black),),
+        centerTitle: true,
+        leading:IconButton(icon: Icon(Icons.arrow_back_ios,color: Colors.black,),onPressed: (){
+          Navigator.of(context).pop();
+        },),),
       body: Column(
         children: [
           const SizedBox(
@@ -59,7 +64,9 @@ class _SearchPageState extends State<SearchPage> {
                   filled: true,
                   fillColor: Color.fromRGBO(196, 196, 196, 0.5647058823529412),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
+
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderSide: BorderSide(width: 1,color: Colors.blue),
                   ),
                   prefixIcon: Icon(Icons.search),
                   hintText: "Where are you going?",

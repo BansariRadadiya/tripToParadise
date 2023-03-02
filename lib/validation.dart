@@ -1,9 +1,9 @@
 class Validators {
   String? validateName(String? value, String type) {
     String pattern = r'(^[a-zA-Z ]*$)';
-    RegExp regExp =  RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     print("Check $value == ${value == null}");
-    if (value == null || (value.isEmpty )) {
+    if (value == null || (value.isEmpty)) {
       return "$type is Required";
     } else if (!regExp.hasMatch(value)) {
       return "$type must be a-z and A-Z";
@@ -20,10 +20,12 @@ class Validators {
 
   String? validateMobile(String? value) {
     String pattern = r'(^\(?([0-9]{3})\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4,5})$)';
-    RegExp regExp =  RegExp(pattern);
-    if (value == null) {
+    RegExp regExp = RegExp(pattern);
+    if (value == null || value.isEmpty) {
       return "Phone number is Required";
     } else if (!regExp.hasMatch(value)) {
+      return "Phone number is not valid";
+    } else if (value.length < 10 || value.length > 10) {
       return "Phone number is not valid";
     }
     return null;
@@ -34,7 +36,7 @@ class Validators {
     String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regExp = RegExp(pattern);
-    if (value == null) {
+    if (value == null || value.isEmpty) {
       return "Email is Required";
     } else if (!regExp.hasMatch(value)) {
       return "Invalid Email";
@@ -46,7 +48,7 @@ class Validators {
   String? validatePassword(String? value) {
     String pattern =
         r'^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$';
-    RegExp regExp =  RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     if (value == null) {
       return "Password is Required";
     } else if (!regExp.hasMatch(value)) {
@@ -57,7 +59,7 @@ class Validators {
   }
 
   String? validatepass(String? value) {
-    if (value == null) {
+    if (value == null || value.isEmpty) {
       return 'Please enter Password';
     }
     if (value.length < 9) {
@@ -67,10 +69,9 @@ class Validators {
     }
   }
 
-
-
-  String?  validatedate(String? value) {
-    String pattern = r'(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)';
+  String? validatedate(String? value) {
+    String pattern =
+        r'(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)';
     RegExp regExp = RegExp(pattern);
     if (value == null) {
       return "Date is Required";
@@ -80,4 +81,3 @@ class Validators {
     return null;
   }
 }
-
