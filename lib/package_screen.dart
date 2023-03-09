@@ -43,14 +43,16 @@ class _PackageState extends State<Package> {
                     top: 50,
                   ),
                   child: InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 25,
-                      )),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      shadows: [Shadow(color: Colors.black, blurRadius: 5)],
+                      size: 25,
+                    ),
+                  ),
                 ),
                 const Spacer(),
                 Padding(
@@ -69,7 +71,8 @@ class _PackageState extends State<Package> {
                               Icons.favorite,
                               color: Colors.red,
                             )
-                          : const Icon(Icons.favorite_border, color: Colors.white),
+                          : const Icon(Icons.favorite_border,
+                              color: Colors.white),
                     ),
                   ),
                 ),
@@ -206,11 +209,51 @@ class _PackageState extends State<Package> {
                             crossAxisSpacing: 10,
                           ),
                           itemBuilder: (context, i) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                widget.data['images'][i],
-                                fit: BoxFit.fill,
+                            // return ClipRRect(
+                            //   borderRadius: BorderRadius.circular(20),
+                            //   child: Image.network(
+                            //     widget.data['images'][i],
+                            //     fit: BoxFit.fill,
+                            return GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return SimpleDialog(
+                                        contentPadding: EdgeInsets.zero,
+                                        backgroundColor:
+                                            Color.fromRGBO(0, 138, 189, 1),
+                                        title: Center(
+                                          child: Text('${widget.data['name']}'),
+                                        ),
+                                        shape: ContinuousRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(50))),
+                                        children: [
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20)),
+                                            child: Image.network(
+                                              widget.data['images'][i],
+                                              fit: BoxFit.fill,
+                                              // color: Colors.transparent,
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.network(
+                                  widget.data['images'][i],
+                                  fit: BoxFit.fill,
+                                ),
                               ),
                             );
                           },
@@ -219,6 +262,21 @@ class _PackageState extends State<Package> {
                       const SizedBox(
                         height: 30,
                       ),
+                      const Text(
+                        "Location",
+                        style: TextStyle(
+                            fontSize: 21, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      InkWell(
+                          onTap: () {},
+                          child: ClipRRect(
+                            child: Image.asset("assets/google-map.png",
+                                fit: BoxFit.fill),
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          )),
                       const SizedBox(
                         height: 20,
                       ),

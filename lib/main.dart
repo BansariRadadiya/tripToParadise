@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:home_page/config/user.dart';
+import 'package:home_page/homepage.dart';
+import 'package:home_page/make_own_plan.dart';
 import 'package:home_page/signin.dart';
 import 'package:home_page/splash_screen.dart';
 import 'package:home_page/widget/favourite.dart';
@@ -26,7 +28,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-      home: SignIn(),
+      home: MakeOwnPlan(),
       debugShowCheckedModeBanner: false,
     );
   }
