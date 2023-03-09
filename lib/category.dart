@@ -7,10 +7,11 @@ import 'package:home_page/widget/favourite.dart';
 import 'config/user.dart';
 
 class Categ extends StatefulWidget {
- final  List<QueryDocumentSnapshot<Map<String, dynamic>>> dataList;
+  final List<QueryDocumentSnapshot<Map<String, dynamic>>> dataList;
   final int index;
 
-  const Categ({Key? key, required this.index,required this.dataList}) : super(key: key);
+  const Categ({Key? key, required this.index, required this.dataList})
+      : super(key: key);
 
   @override
   State<Categ> createState() => _CategState();
@@ -540,10 +541,13 @@ class _CategState extends State<Categ> {
   ];
   int selected = 0;
   List<String> catG = [
-    "Mountain",
+    "HillStations",
     "Beach",
     "History",
     "Desert",
+    "WildLife",
+    "Waterfall",
+    "Educational"
   ];
 
   List<List<QueryDocumentSnapshot<Map<String, dynamic>>>> categoryList = [];
@@ -554,10 +558,12 @@ class _CategState extends State<Categ> {
     getCategory();
     super.initState();
   }
-  
-  void getCategory(){
-    for(var e in catG){
-      categoryList.add(widget.dataList.where((element) => element['category'] == e).toList());
+
+  void getCategory() {
+    for (var e in catG) {
+      categoryList.add(widget.dataList
+          .where((element) => element['category'] == e)
+          .toList());
     }
   }
 
@@ -577,7 +583,7 @@ class _CategState extends State<Categ> {
             height: 35,
             margin: const EdgeInsets.only(left: 5),
             child: ListView.builder(
-              itemCount: 4,
+              itemCount: 7,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return InkWell(
@@ -622,8 +628,13 @@ class _CategState extends State<Categ> {
                 itemBuilder: (context, i) {
                   final data = categoryList[selected][i];
                   return InkWell(
-                    onTap: (){
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context)=>Package(data: data,))).whenComplete(() => setState((){}));
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                              builder: (context) => Package(
+                                    data: data,
+                                  )))
+                          .whenComplete(() => setState(() {}));
                     },
                     child: Stack(
                       fit: StackFit.expand,
@@ -656,14 +667,18 @@ class _CategState extends State<Categ> {
                           top: 15,
                           right: 10,
                           child: GestureDetector(
-                            onTap: ()async{
+                            onTap: () async {
                               await Favourite.updateFavourite(data.id);
-                              setState((){});
+                              setState(() {});
                             },
                             child: Container(
-                              child: UserProfile.favouriteList.contains(data.id) ?
-                              Icon(Icons.favorite, color: Colors.red,) :
-                              Icon(Icons.favorite_border, color: Colors.white),
+                              child: UserProfile.favouriteList.contains(data.id)
+                                  ? const Icon(
+                                      Icons.favorite,
+                                      color: Colors.red,
+                                    )
+                                  : const Icon(Icons.favorite_border,
+                                      color: Colors.white),
                             ),
                           ),
                         ),
@@ -671,6 +686,8 @@ class _CategState extends State<Categ> {
                           left: 5,
                           bottom: 15,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -734,8 +751,6 @@ class _CategState extends State<Categ> {
                               //   ],
                               // ),
                             ],
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
                           ),
                         ),
                       ],

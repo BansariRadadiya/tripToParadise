@@ -20,10 +20,10 @@ class _FavoritesState extends State<Favorites> {
 
   void getData() async {
     allList.clear();
-    final QuerySnapshot<Map<String, dynamic>> snap =  await FirebaseFirestore.instance.collection("places").get();
-    final QuerySnapshot<Map<String, dynamic>> snap1 =  await FirebaseFirestore.instance.collection("recommended").get();
+    final QuerySnapshot<Map<String, dynamic>> snap =  await FirebaseFirestore.instance.collection("place").get();
+   // final QuerySnapshot<Map<String, dynamic>> snap1 =  await FirebaseFirestore.instance.collection("recommended").get();
       allList.addAll(snap.docs);
-      allList.addAll(snap1.docs);
+     // allList.addAll(snap1.docs);
       findFavourite();
 
   }

@@ -6,6 +6,7 @@ import 'package:home_page/widget/globals.dart' as global;
 import 'package:home_page/widget/loading_dialog.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
+import 'package:home_page/config/global.dart' as globals;
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({Key? key}) : super(key: key);
@@ -17,9 +18,9 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   TextEditingController _optController = TextEditingController();
 
-  
   FirebaseAuth _auth = FirebaseAuth.instance;
   void signInWithPhoneAuthCred(AuthCredential phoneAuthCredential) async {
+    LoadingDialog.showLoadingDialog();
     try {
       final authCred = await _auth.signInWithCredential(phoneAuthCredential);
 
@@ -131,6 +132,8 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
                 child: InkWell(
                   onTap: () {
+                    globals.isAdmin = false;
+                 //   LoadingDialog.showLoadingDialog();
                     AuthCredential phoneAuthCredential =
                         PhoneAuthProvider.credential(
                             verificationId: global.verificationId,

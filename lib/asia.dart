@@ -16,9 +16,9 @@ class _AsiaState extends State<Asia> {
   int selected = 0;
   List<String> countryName = [
     "All",
-    "Asia",
-    "Europe",
-    "America",
+    "Gujrat",
+    "Delhi",
+    "Goa",
     "Ocenia",
   ];
 
@@ -27,6 +27,7 @@ class _AsiaState extends State<Asia> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xee769796),
           title: const Center(
             child: Text("Packages"),
           ),
@@ -54,7 +55,7 @@ class _AsiaState extends State<Asia> {
                         width: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: selected == i ? Colors.lightBlue : null,
+                          color: selected == i ? Color(0xee769796) : null,
                         ),
                         child: Center(
                           child: Text(
@@ -99,7 +100,7 @@ class _AsiaState extends State<Asia> {
                             child: GridTile(
                               footer: Container(
                                 height: 60,
-                                color: Colors.white,
+                                color: Colors.black12,
                                 child: Row(
                                   children: [
                                     Row(
@@ -108,12 +109,12 @@ class _AsiaState extends State<Asia> {
                                           width: 10,
                                         ),
                                         ClipRRect(
-                                          child: Image(
-                                            image: NetworkImage(data['images'][1]),
-                                            height: 30,
-                                            width: 40,
-                                            fit: BoxFit.fitWidth,
-                                          ),
+                                          // child: Image(
+                                          //   image: NetworkImage(data['images'][1]),
+                                          //   height: 30,
+                                          //   width: 40,
+                                          //   fit: BoxFit.fitWidth,
+                                          // ),
                                         ),
                                         const SizedBox(
                                           width: 10,
@@ -128,7 +129,7 @@ class _AsiaState extends State<Asia> {
                                                 data['name'],
                                                 style: TextStyle(
                                                   fontSize: 13,
-                                                  color: Colors.grey,
+                                                  color: Colors.white,
                                                 ),
                                               ),
                                             )

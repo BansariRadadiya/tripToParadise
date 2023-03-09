@@ -5,7 +5,7 @@ import 'package:home_page/favourites.dart';
 import 'package:home_page/homepage.dart';
 import 'package:home_page/profile.dart';
 import 'package:home_page/profile_screen.dart';
-
+import 'config/global.dart' as globals;
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
@@ -38,9 +38,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           HomePage(),
           Favorites(),
           ProfileScreen(),
-        ].elementAt(selectedIndex),
+        ].elementAt(globals.selectedIndex2),
         bottomNavigationBar: BottomNavigationBar(
-            currentIndex: selectedIndex,
+            currentIndex: globals.selectedIndex2,
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
               BottomNavigationBarItem(
@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
             onTap: (value) {
               setState(() {
-                selectedIndex = value;
+               globals.selectedIndex2 = value;
               });
             }),
       ),

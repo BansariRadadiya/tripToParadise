@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class LoadingDialog {
+  // static showLoadingDialog() {
+  //   Get.dialog(
+  //       Center(
+  //         child: Container(
+  //           height: 120,
+  //           width: 120,
+  //           alignment: Alignment.center,
+  //           decoration: BoxDecoration(
+  //               color: Colors.white, borderRadius: BorderRadius.circular(14)),
+  //           child: CircularProgressIndicator(),
+  //         ),
+  //       ),
+  //       barrierDismissible: false);
+  // }
+
   static showLoadingDialog() {
     Get.dialog(
         Center(
@@ -11,7 +27,7 @@ class LoadingDialog {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(14)),
-            child: CircularProgressIndicator(),
+            child: Lottie.asset("assets/loder.json"),
           ),
         ),
         barrierDismissible: false);

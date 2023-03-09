@@ -1,6 +1,5 @@
 import 'dart:ui';
-//final check
-//priti
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:home_page/asia.dart';
 import 'package:home_page/category.dart';
 import 'package:home_page/config/user.dart';
+import 'package:home_page/dashboard_screen.dart';
 import 'package:home_page/favourites.dart';
 import 'package:home_page/main.dart';
 import 'package:home_page/package_screen.dart';
@@ -17,8 +17,9 @@ import 'package:home_page/screens/drawer_screen/manage_place.dart';
 import 'package:home_page/screens/login_option.dart';
 import 'package:home_page/setting.dart';
 import 'package:home_page/widget/favourite.dart';
+import 'package:home_page/widget/loading_dialog.dart';
 import 'package:home_page/widget/search_page.dart';
-import 'package:home_page/config/global.dart' as globals ;
+import 'package:home_page/config/global.dart' as globals;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,19 +29,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> tabButton = ["All", "Asia", "Europe", "America", "Oceania"];
+  List<String> tabButton = ["All", "Gujrat", "Delhi", "Goa", "Oceania"];
   String firstLetter = "U";
   String uname = "User";
 
   int selectButton = 0;
   int button = 0;
   List<String> category = [
-    "assets/mountain.png",
-    "assets/beach.png",
-    "assets/history.png",
-    "assets/desert.png",
+    "assets/mountain_logo.png",
+    "assets/baech_logo.png",
+    "assets/history_logo-2.png",
+    "assets/desert_logo_final.png",
+    "assets/wildlife_logo-1.png",
+    "assets/waterfall_logo.png",
+    "assets/education_logo.png",
   ];
-  List<String> name = ["Mountains", "Beach", "History", "Desert"];
+  List<String> name = [
+    "HillStations ",
+    "Beach",
+    "History",
+    "Desert",
+    "WildLife",
+    "WaterFall",
+    "Educational"
+  ];
 
   List appSpecial = [
     {
@@ -86,15 +98,15 @@ class _HomePageState extends State<HomePage> {
 
   void getData() async {
     final QuerySnapshot<Map<String, dynamic>> snap =
-        await FirebaseFirestore.instance.collection("places").get();
+        await FirebaseFirestore.instance.collection("place").get();
     setState(() {
       dataList = snap.docs;
       for (var e in tabButton) {
         if (e == "All") {
           packageList.add(dataList);
         } else {
-          packageList.add(
-              dataList.where((element) => element['location'] == e).toList());
+          packageList
+              .add(dataList.where((element) => element['state'] == e).toList());
         }
       }
     });
@@ -128,215 +140,224 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         backgroundColor: Colors.white,
       ),
-    drawer: globals.isAdmin == true
-        ? Drawer(
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            accountName: Text(
-              uname == null ? "User" : uname,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.white,
-              ),
-            ),
-            accountEmail: Text(
-              '${UserProfile.email}',
-              style: TextStyle(fontSize: 15, color: Colors.white),
-            ),
-            // Text("${UserProfile.email}",style: TextStyle(color: Colors.white,fontSize: 18),),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.black54,
-              child: Text(
-                firstLetter == null ? "U" : firstLetter,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.logout,
-              color: Colors.black,
-            ),
-            title: Text('Sign out'),
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      child: AlertDialog(
-                        title: Text('Alert!!'),
-                        content: Text(
-                            'Are you sure,that you want to Sign out?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              GoogleSignIn().disconnect();
-                              FirebaseAuth.instance.signOut();
-                              //await FacebookAuth.instance.logOut();
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          LoginOption()));
-                            },
-                            child: Text('Yes'),
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              },
-                              child: Text('No'))
-                        ],
+      drawer: globals.isAdmin == true
+          ? Drawer(
+              child: Column(
+                children: [
+                  UserAccountsDrawerHeader(
+                    accountName: Text(
+                      uname == null ? "User" : uname,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.white,
                       ),
-                    );
-                  });
-            },
-            // GoogleSignIn().disconnect();
-            // FirebaseAuth.instance.signOut();
-            //            Navigator.pop(context);
-            // Navigator.of(context).pushReplacementNamed('/');
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.account_circle_outlined,
-              color: Colors.black,
-            ),
-            title: Text('Profile'),
-            onTap:
-            (() {} // ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>),
-            ),
+                    ),
+                    accountEmail: Text(
+                      '${UserProfile.email}',
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    ),
+                    // Text("${UserProfile.email}",style: TextStyle(color: Colors.white,fontSize: 18),),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Colors.black54,
+                      child: Text(
+                        firstLetter == null ? "U" : firstLetter,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
+                    title: Text('Sign out'),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              child: AlertDialog(
+                                title: Text('Alert!!'),
+                                content: Text(
+                                    'Are you sure,that you want to Sign out?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      LoadingDialog.showLoadingDialog();
+                                      GoogleSignIn().disconnect();
+                                      FirebaseAuth.instance.signOut();
+                                      //await FacebookAuth.instance.logOut();
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginOption()));
+                                    },
+                                    child: Text('Yes'),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('No'))
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    // GoogleSignIn().disconnect();
+                    // FirebaseAuth.instance.signOut();
+                    //            Navigator.pop(context);
+                    // Navigator.of(context).pushReplacementNamed('/');
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.account_circle_outlined,
+                      color: Colors.black,
+                    ),
+                    title: Text('Profile'),
+                    onTap: (() {
+                      setState(() {
+                        setState(() {
+                          globals.selectedIndex2 = 2;
+                          print('===============${globals.selectedIndex2}');
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => DashboardScreen()));
+                        });
+                      });
+                    } // ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context)=>),
+                        ),
 
-            // biuldListTile('Cart', Icons.shopping_cart, () {
-            //   Navigator.of(context).pushReplacementNamed(.routeName);
-            // }),
-            // biuldListTile('Orders', Icons.payment, () {
-            //   //Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
-            // }),
-            // biuldListTile('Contact us', Icons.contact_page, () {
-            //   Navigator.of(context).pushReplacementNamed(ContactUs.routeName);
-            //}
-            //  ),
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.image_outlined,
-              color: Colors.black,
-            ),
-            title: Text('Manage Palces'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ManagePlace()));
-            },
-            // GoogleSignIn().disconnect();
-            // FirebaseAuth.instance.signOut();
-            //            Navigator.pop(context);
-            // Navigator.of(context).pushReplacementNamed('/');
-          ),
-        ],
-      ),
-    )
-        : Drawer(
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            accountName: Text(
-              uname == null ? "User" : uname,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            accountEmail: Text(
-              "${UserProfile.email}",
-              style: TextStyle(color: Colors.white, fontSize: 15),
-            ),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.black54,
-              child: Text(
-                firstLetter == null ? "U" : firstLetter,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold),
+                    // biuldListTile('Cart', Icons.shopping_cart, () {
+                    //   Navigator.of(context).pushReplacementNamed(.routeName);
+                    // }),
+                    // biuldListTile('Orders', Icons.payment, () {
+                    //   //Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
+                    // }),
+                    // biuldListTile('Contact us', Icons.contact_page, () {
+                    //   Navigator.of(context).pushReplacementNamed(ContactUs.routeName);
+                    //}
+                    //  ),
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.image_outlined,
+                      color: Colors.black,
+                    ),
+                    title: Text('Manage Palces'),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ManagePlace()));
+                    },
+                    // GoogleSignIn().disconnect();
+                    // FirebaseAuth.instance.signOut();
+                    //            Navigator.pop(context);
+                    // Navigator.of(context).pushReplacementNamed('/');
+                  ),
+                ],
+              ),
+            )
+          : Drawer(
+              child: Column(
+                children: [
+                  UserAccountsDrawerHeader(
+                    accountName: Text(
+                      uname == null ? "User" : uname,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    accountEmail: Text(
+                      "${UserProfile.email}",
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Colors.black54,
+                      child: Text(
+                        firstLetter == null ? "U" : firstLetter,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
+                    title: Text('Sign out'),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              child: AlertDialog(
+                                title: Text('Alert!!'),
+                                content: Text(
+                                    'Are you sure,that you want to Sign out?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      LoadingDialog.showLoadingDialog();
+                                      GoogleSignIn().disconnect();
+                                      FirebaseAuth.instance.signOut();
+                                      //await FacebookAuth.instance.logOut();
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginOption()));
+                                    },
+                                    child: Text('Yes'),
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('No'))
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    // GoogleSignIn().disconnect();
+                    // FirebaseAuth.instance.signOut();
+                    //            Navigator.pop(context);
+                    // Navigator.of(context).pushReplacementNamed('/');
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.account_circle_outlined,
+                      color: Colors.black,
+                    ),
+                    title: Text('Profile'),
+                    onTap: () {
+                      setState(() {
+                        setState(() {
+                          globals.selectedIndex2 = 2;
+                          print('===============${globals.selectedIndex2}');
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => DashboardScreen()));
+                        });
+                      });
+                    }
+                  ),
+                ],
               ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.logout,
-              color: Colors.black,
-            ),
-            title: Text('Sign out'),
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      child: AlertDialog(
-                        title: Text('Alert!!'),
-                        content: Text(
-                            'Are you sure,that you want to Sign out?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              GoogleSignIn().disconnect();
-                              FirebaseAuth.instance.signOut();
-                              //await FacebookAuth.instance.logOut();
-                              Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          LoginOption()));
-                            },
-                            child: Text('Yes'),
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              },
-                              child: Text('No'))
-                        ],
-                      ),
-                    );
-                  });
-            },
-            // GoogleSignIn().disconnect();
-            // FirebaseAuth.instance.signOut();
-            //            Navigator.pop(context);
-            // Navigator.of(context).pushReplacementNamed('/');
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.account_circle_outlined,
-              color: Colors.black,
-            ),
-            title: Text('Profile'),
-            onTap:(){
-              //Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProfileScreen()));
-              setState((){
-                setState((){
-                  globals.selectedIndex2 =2;
-                  print('===============${globals.selectedIndex2}');
-                });
-              });
-              Navigator.of(context).pop();
-            },
-
-          ),
-        ],
-      ),
-    ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -375,8 +396,7 @@ class _HomePageState extends State<HomePage> {
                           Color.fromRGBO(196, 196, 196, 0.5647058823529412),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
-
-                        borderSide: BorderSide(width: 1,color: Colors.blue),
+                        borderSide: BorderSide(width: 1, color: Colors.blue),
                       ),
                       prefixIcon: Icon(Icons.search),
                       hintText: "Where are you going?",
@@ -523,8 +543,8 @@ class _HomePageState extends State<HomePage> {
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
-                                            const Text(
-                                              "South Asia",
+                                            Text(
+                                              data['state'],
                                               style:
                                                   TextStyle(color: Colors.grey),
                                             ),
@@ -535,8 +555,8 @@ class _HomePageState extends State<HomePage> {
                                           Icons.star,
                                           color: Colors.amberAccent,
                                         ),
-                                        const Text(
-                                          "4.6",
+                                        Text(
+                                          "${data['rating']}",
                                           style: TextStyle(
                                               color: Colors.amberAccent),
                                         )
@@ -569,7 +589,7 @@ class _HomePageState extends State<HomePage> {
                 height: 130,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: 4,
+                    itemCount: 7,
                     itemBuilder: (context, i) {
                       return InkWell(
                         onTap: () {
@@ -601,6 +621,8 @@ class _HomePageState extends State<HomePage> {
                                   child: Image.asset(
                                     category[i],
                                     alignment: Alignment.center,
+                                    // fit: BoxFit.values[6],
+                                    // color: Colors.black,
                                   ),
                                 ),
                               ),

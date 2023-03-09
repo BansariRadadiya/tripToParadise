@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:home_page/widget/loading_dialog.dart';
 import 'package:lottie/lottie.dart';
 import 'otp_screen.dart';
 import '../widget/globals.dart' as global;
@@ -16,15 +18,34 @@ class _PhoneLoginState extends State<PhoneLogin> {
   TextEditingController _countryCode = TextEditingController();
   TextEditingController _number = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> dataList = [];
+  int number = 0;
+
+  void getData() async {
+    final QuerySnapshot<Map<String, dynamic>> snap =
+        await FirebaseFirestore.instance.collection("users").get();
+    setState(() {
+      dataList = snap.docs;
+      print("=====================data list ${dataList.length}");
+      print("${dataList[0]['mobile']}");
+      for (int i = 0; i < dataList.length; i++) {
+        if (dataList[i]['mobile'] == _number.text.toString().trim()) {
+          number = dataList[i]['mobile'];
+          print("===========in getData    $number");
+        }
+      }
+    });
+  }
 
   @override
   void initState() {
     _countryCode.text = "+91";
+    getData();
     super.initState();
   }
 
   Future sendOTP() async {
+    LoadingDialog.showLoadingDialog();
     await _auth.verifyPhoneNumber(
         phoneNumber: "+91${_number.text}",
         verificationCompleted: (phoneAuthCredential) async {},
@@ -33,6 +54,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
         },
         codeSent: (verificationID, resendingToken) async {
           setState(() {
+            LoadingDialog.hideLoading();
+            LoadingDialog.showSuccessToast("OTP Send Successfully!");
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => OtpScreen()));
             global.verificationId = verificationID;
@@ -120,7 +143,8 @@ class _PhoneLoginState extends State<PhoneLogin> {
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter phone number';
-                                } else if (value.length < 10 || value.length >10) {
+                                } else if (value.length < 10 ||
+                                    value.length > 10) {
                                   return 'Please enter valid number';
                                 }
                                 return null;
@@ -140,7 +164,15 @@ class _PhoneLoginState extends State<PhoneLogin> {
                   child: InkWell(
                     onTap: () {
                       if (_key.currentState!.validate()) {
+                        print("==================$number");
                         sendOTP();
+                        // if (_number == number) {
+                        //   sendOTP();
+                        // } else {
+                        //   LoadingDialog.hideLoading();
+                        //   LoadingDialog.showErrorToast(
+                        //       "number is not register");
+                        // }
                         // Navigator.of(context).push(
                         //   MaterialPageRoute(builder: (context) => OtpScreen()),
                         // );

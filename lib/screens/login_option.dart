@@ -34,6 +34,7 @@ class _LoginOptionState extends State<LoginOption> {
     GoogleSignInAccount? account = await _googleSignIn.signIn();
 
     if (account != null) {
+      LoadingDialog.showLoadingDialog();
       GoogleSignInAuthentication credential = await account.authentication;
       AuthCredential authCredential = GoogleAuthProvider.credential(
         idToken: credential.idToken,

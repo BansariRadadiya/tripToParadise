@@ -13,8 +13,10 @@ import 'package:home_page/screens/signin.dart';
 import 'package:home_page/splash_screen.dart';
 import 'package:home_page/widget/favourite.dart';
 import 'package:home_page/widget/loading_dialog.dart';
+import 'package:home_page/widget/mapdemo.dart';
 
 import 'dashboard_screen.dart';
+import 'screens/first_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +35,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-      home: LoginOption(),
+      home: SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

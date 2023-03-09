@@ -11,9 +11,12 @@ import 'package:home_page/validation.dart';
 import 'package:home_page/widget/loading_dialog.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:home_page/config/global.dart' as globals;
 
 class SignIn extends StatefulWidget {
-  const SignIn({Key? key,}) : super(key: key);
+  const SignIn({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -86,14 +89,14 @@ class _SignInState extends State<SignIn> {
           UserProfile.id = res['id'];
           // UserProfile.name = res['name'];
           UserProfile.profile = res['profile'];
-          UserProfile.email=res['email'];
+          UserProfile.email = res['email'];
           SharedPreferences _pref = await SharedPreferences.getInstance();
           //  _pref.setString("name", res['name']);
           _pref.setString("id", res['id']);
           _pref.setString("userName", res['userName']);
           _pref.setString("profile", res['profile']);
           _pref.setString("email", res['email']);
-         // _pref.setBool('isLogin', true);
+          // _pref.setBool('isLogin', true);
           LoadingDialog.hideLoading();
           LoadingDialog.showSuccessToast("Login Successfully");
           Navigator.of(context)
@@ -141,181 +144,186 @@ class _SignInState extends State<SignIn> {
       }
     }
   }*/
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Stack(
-          children: [
-            // SizedBox(
-            //   height: double.infinity,
-            //   width: double.infinity,
-            //   child: Image.asset(
-            //     "assets/background_all.png",
-            //     fit: BoxFit.fill,
-            //   ),
-            // ),
-            SingleChildScrollView(
-              child: Form(
-                key: _key,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 20,
-                        top: 20,
-                      ),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Icon(Icons.arrow_back_ios,
-                            color: Color(0xE80A0A0A)),
-                      ),
-                    ),
-                    Center(
-                      child: Container(
-                        height: 300,
-                        width: 300,
-                        child: Lottie.asset("assets/roatating_planet.json",
-                            fit: BoxFit.fill),
-                      ),
-                    ),
-                    Center(
-                      child: Text(
-                        "Sign In with Email",
-                        style: TextStyle(
-                          fontSize: 27,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 30,
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: TextFormField(
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          fillColor: Color.fromRGBO(0, 0, 0, 490),
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(40),
-                            ),
-                          ),
-                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                          hintText: "Email",
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please Enter Email';
-                          } else if (!value.contains(".com") &&
-                              !value.contains("@gmail")) {
-                            return 'Please enter valid email';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                        left: 10,
-                        right: 10,
-                      ),
-                      child: TextFormField(
-                        controller: _pswdController,
-                        decoration: InputDecoration(
-                          fillColor: Color.fromRGBO(0, 0, 0, 490),
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(40),
-                            ),
-                          ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 15),
-                          hintText: "Password",
-                          suffixIcon: InkWell(
-                            onTap: () {
-                              setState(() {
-                                state = !state;
-                              });
-                            },
-                            child: const Icon(Icons.remove_red_eye_outlined),
-                          ),
-                        ),
-                        validator: ((value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter password';
-                          }
-                          return null;
-                        }),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ResetPwd()));
-                              },
-                              child: const Text("Forgot Password?"),
-                            ),
-                          ]),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        if (_key.currentState!.validate()) {
-                          if(_emailController.text.toString().trim()=="admin@gmail.com" && _pswdController.text.toString().trim()=="admin@123"){
-                            LoadingDialog.hideLoading();
-                            LoadingDialog.showErrorToast("Wrong Id & Password");
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SignIn()));
-                          }else {
-                            signIn();
-                          }
-                        }
-                      },
-                      child: Container(
-                        height: 50,
-                        margin: const EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                          top: 20,
-                        ),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          border: Border.all(width: 1.2),
-                          color: Color(0x881CD7DB),
-                        ),
-                        child: const Text(
-                          "Sign in",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                  ],
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0.0,
+          leading:  Padding(
+          padding: const EdgeInsets.only(
+            left: 20,
+            top: 20,
+          ),
+          child: InkWell(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: const Icon(Icons.arrow_back_ios,
+                color: Color(0xE80A0A0A)),
+          ),
+        ), ),
+        body: SingleChildScrollView(
+          child: Form(
+            key: _key,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                               Center(
+                  child: SizedBox(
+                    height: 300,
+                    width: 300,
+                    child: Lottie.asset("assets/roatating_planet.json",
+                        fit: BoxFit.fill),
+                  ),
                 ),
-              ),
+                const Center(
+                  child: Text(
+                    "Sign In with Email",
+                    style: TextStyle(
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 30,
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.email_outlined),
+                      fillColor: Color.fromRGBO(0, 0, 0, 490),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(40),
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                      hintText: "Email",
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please Enter Email';
+                      } else if (!value.contains(".com") &&
+                          !value.contains("@gmail")) {
+                        return 'Please enter valid email';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: TextFormField(
+                    obscureText: _obscureText,
+                    controller: _pswdController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.key),
+                      fillColor: const Color.fromRGBO(0, 0, 0, 490),
+                      filled: true,
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(40),
+                        ),
+                      ),
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 15),
+                      hintText: "Password",
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                        child: Icon(_obscureText
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                      ),
+                    ),
+                    validator: ((value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter password';
+                      }
+                      return null;
+                    }),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const ResetPwd()));
+                          },
+                          child: const Text("Forgot Password?",style: TextStyle(decoration: TextDecoration.underline)),
+                        ),
+                      ]),
+                ),
+                InkWell(
+                  onTap: () {
+                    if (_key.currentState!.validate()) {
+                      if (_emailController.text.toString().trim() ==
+                              "admin@gmail.com" &&
+                          _pswdController.text.toString().trim() ==
+                              "admin@123") {
+                        LoadingDialog.hideLoading();
+                        LoadingDialog.showErrorToast("Wrong Id & Password");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SignIn()));
+                      } else {
+                        setState(() {
+                          globals.isAdmin=false;
+                        });
+                        signIn();
+                      }
+                    }
+                  },
+                  child: Container(
+                    height: 50,
+                    margin: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 20,
+                    ),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(width: 1.2),
+                      color: const Color(0x881CD7DB),
+                    ),
+                    child: const Text(
+                      "Sign in",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 70,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

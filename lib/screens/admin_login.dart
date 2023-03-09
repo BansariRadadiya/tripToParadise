@@ -115,7 +115,7 @@ class _AdminLoginState extends State<AdminLogin> {
   //   Navigator.of(context).push(MaterialPageRoute(builder:(context)=>DashboardScreen()));
   //   //navigatorKey.currentState!.popUntil((route) => route.isFirst);
   // }
-
+  bool _obscureText = true;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -173,6 +173,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         right: 10,
                       ),
                       child: TextFormField(
+                        keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please Enter Email';
@@ -184,6 +185,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         },
                         controller: _emailController,
                         decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.email_outlined),
                           fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
@@ -203,6 +205,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         right: 10,
                       ),
                       child: TextFormField(
+                        obscureText: _obscureText,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter password';
@@ -211,6 +214,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         },
                         controller: _passController,
                         decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.key),
                           fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
@@ -221,13 +225,15 @@ class _AdminLoginState extends State<AdminLogin> {
                           contentPadding:
                           const EdgeInsets.symmetric(horizontal: 15),
                           hintText: "Password",
-                          suffixIcon: InkWell(
+                          suffixIcon:  GestureDetector(
                             onTap: () {
                               setState(() {
-                                state = !state;
+                                _obscureText = !_obscureText;
                               });
                             },
-                            child: const Icon(Icons.remove_red_eye_outlined),
+                            child:  Icon(_obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility),
                           ),
                         ),
                       ),

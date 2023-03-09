@@ -91,8 +91,12 @@ class _ResetPwdState extends State<ResetPwd> {
                 ),
                 Center(
                   child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                     controller: _email,
                     decoration: const InputDecoration(
+
+                      prefixIcon: Icon(Icons.email),
+
                       fillColor: Color.fromRGBO(0, 0, 0, 490),
                       filled: true,
                       border: OutlineInputBorder(

@@ -31,6 +31,9 @@ class _SignUpState extends State<SignUp> {
   bool state2 = true;
   String gender = 'Male';
   bool? year;
+  bool _obscureText = true;
+  bool _obscureText2 = true;
+
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -110,6 +113,7 @@ class _SignUpState extends State<SignUp> {
                       validator: (value) =>
                           Validators().validateName(value, "User Name"),
                       decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.person),
                           fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
@@ -153,6 +157,7 @@ class _SignUpState extends State<SignUp> {
                       controller: dob,
                       //  validator: (value) => Validators().validatedate(value),
                       decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.calendar_month),
                           fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
@@ -209,9 +214,11 @@ class _SignUpState extends State<SignUp> {
                     padding:
                         const EdgeInsets.only(right: 10, left: 10, top: 10),
                     child: TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       controller: _mailController,
                       validator: (value) => Validators.validateEmail(value),
                       decoration: const InputDecoration(
+                          prefixIcon: Icon(Icons.email_outlined),
                           fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
@@ -231,6 +238,7 @@ class _SignUpState extends State<SignUp> {
                       controller: _mobileController,
                       validator: (value) => Validators().validateMobile(value),
                       decoration: const InputDecoration(
+                        prefixIcon: Icon(Icons.call),
                           fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
@@ -249,9 +257,10 @@ class _SignUpState extends State<SignUp> {
                     child: TextFormField(
                       controller: _pwdController,
                       validator: (value) => Validators().validatepass(value),
-                      obscureText: state,
+                      obscureText: _obscureText,
                       decoration: InputDecoration(
-                          fillColor: Color.fromRGBO(0, 0, 0, 490),
+                        prefixIcon: Icon(Icons.key),
+                        fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -261,14 +270,16 @@ class _SignUpState extends State<SignUp> {
                           ),
                           contentPadding: EdgeInsets.symmetric(horizontal: 20),
                           hintText: "Password",
-                          suffixIcon: InkWell(
+                          suffixIcon:  GestureDetector(
                             onTap: () {
                               setState(() {
-                                state = !state;
+                                _obscureText = !_obscureText;
                               });
                             },
-                            child: const Icon(Icons.remove_red_eye_rounded),
-                          )),
+                            child: new Icon(_obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                          ),),
                     ),
                   ),
                   Padding(
@@ -288,9 +299,10 @@ class _SignUpState extends State<SignUp> {
                         }
                         return null;
                       }),
-                      obscureText: state2,
+                      obscureText: _obscureText2,
                       decoration: InputDecoration(
-                          fillColor: Color.fromRGBO(0, 0, 0, 490),
+                        prefixIcon: Icon(Icons.key),
+                        fillColor: Color.fromRGBO(0, 0, 0, 490),
                           filled: true,
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -300,14 +312,16 @@ class _SignUpState extends State<SignUp> {
                           ),
                           contentPadding: EdgeInsets.symmetric(horizontal: 20),
                           hintText: "Re-password",
-                          suffixIcon: InkWell(
+                          suffixIcon:  GestureDetector(
                             onTap: () {
                               setState(() {
-                                state2 = !state2;
+                                _obscureText2 = !_obscureText2;
                               });
                             },
-                            child: const Icon(Icons.remove_red_eye_rounded),
-                          )),
+                            child: new Icon(_obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                          ),),
                     ),
                   ),
                   Padding(
@@ -347,8 +361,8 @@ class _SignUpState extends State<SignUp> {
                       const Text("already have an account? "),
                       InkWell(
                         onTap: () {
-                          widget.onClickdSignIn;
-                          // Navigator.of(context).pop(const SignIn());
+
+                           Navigator.of(context).pop(const SignIn());
                         },
                         child: const Text(
                           "Sign in",
